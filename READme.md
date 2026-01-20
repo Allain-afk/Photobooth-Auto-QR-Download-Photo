@@ -1,133 +1,87 @@
-# 📸 Photobooth QR Automation System
+# Photobooth Pro - Professional Photobooth Software
 
-A local photobooth automation system that monitors a folder for new photos and displays a popup with a QR code linking to Google Drive for easy download.
+A free, open-source alternative to commercial photobooth software like DSLRBooth.
 
 ## Features
 
-- **Real-time Monitoring**: Watches a folder for new `.jpg` and `.png` files using the `watchdog` library
-- **QR Code Generation**: Instantly generates a QR code pointing to your Google Drive
-- **Beautiful UI**: Modern, borderless popup window with photo preview and QR code
-- **Auto-close**: Popup automatically closes after 30 seconds (configurable)
-- **Multi-threading**: Can handle multiple photos in quick succession
+- 🖥️ **Standalone EXE** - No Python installation required for end users
+- ⚙️ **Easy Configuration** - GUI settings window on first run
+- 📁 **Auto-monitoring** - Watches any folder for new photos
+- ☁️ **Google Drive Integration** - QR codes link to your shared folder
+- ⏱️ **Auto-close popups** - Configurable timeout
 
-## Installation
+## Quick Start (Using EXE)
 
-1. **Install Python 3.8+** if not already installed
+### For End Users
+
+1. **Download** the `Photobooth-QR.exe` file
+2. **Double-click** to run
+3. **Configure settings** in the popup window:
+   - Set the folder where photos are saved
+   - Enter your Google Drive Folder ID
+   - Set auto-close time (default: 30 seconds)
+4. **Click "Save & Start"**
+
+The app will now monitor your folder and show popups with QR codes!
+
+### Getting Google Drive Folder ID
+
+1. Install [Google Drive for Desktop](https://www.google.com/drive/download/)
+2. Create a folder in Google Drive for your photos
+3. Set up sync for your photobooth output folder
+4. Share the folder: Right-click → Share → "Anyone with link can view"
+5. Copy the folder URL: `https://drive.google.com/drive/folders/YOUR_FOLDER_ID`
+6. The ID is the part after `/folders/` → Use this in settings
+
+## Development Setup
+
+### For Developers
+
+If you want to modify the code or build the EXE yourself:
+
+1. **Install Python 3.8+**
 
 2. **Install dependencies**:
    ```bash
-   cd "C:\Users\user\Documents\Photobooth"
    pip install -r requirements.txt
    ```
 
-## Configuration
-
-Open `photobooth_qr.py` and modify the configuration section at the top:
-
-```python
-# Folder to monitor for new photos
-WATCH_FOLDER = r"C:\Photobooth\Outputs"
-
-# Time in seconds before the popup automatically closes
-QR_DISPLAY_TIME = 30
-
-# Your Google Drive shared folder ID
-DRIVE_FOLDER_ID = "YOUR_GOOGLE_DRIVE_FOLDER_ID_HERE"
-```
-
-### Getting Your Google Drive Folder ID
-
-1. Open Google Drive in your browser
-2. Navigate to the folder you want to share
-3. Click **Share** and set it to "Anyone with the link can view"
-4. Copy the folder URL (e.g., `https://drive.google.com/drive/folders/1ABC123xyz`)
-5. The folder ID is the part after `/folders/` → `1ABC123xyz`
-
-### Setting Up Google Drive for Desktop
-
-1. Install [Google Drive for Desktop](https://www.google.com/drive/download/)
-2. Configure it to sync your `WATCH_FOLDER` to Google Drive
-3. Share the synced folder publicly
-
-## Usage
-
-1. **Start the application**:
+3. **Run from source**:
    ```bash
-   python photobooth_qr.py
+   python photobooth.py
    ```
 
-2. **Take photos** - When your photobooth software saves a new `.jpg` or `.png` to the watched folder, the popup will automatically appear
+4. **Build EXE**:
+   ```bash
+   # Windows
+   build_exe.bat
+   
+   # Or manually
+   pyinstaller --onefile --windowed --name="Photobooth-QR" photobooth.py
+   ```
 
-3. **Scan the QR code** - Guests can scan with their phone camera to access the Google Drive folder
+See [BUILD_INSTRUCTIONS.md](BUILD_INSTRUCTIONS.md) for detailed build steps.
 
-## UI Preview
+## Configuration
 
-The popup window displays:
-- 📷 **Left**: Photo preview (scaled to fit)
-- 📱 **Right**: QR code for scanning
-- ⏱️ **Bottom**: Countdown timer
+Settings are saved in `photobooth_config.json` which is created automatically.
 
-Click anywhere or press `Escape` to close the popup early.
+To reconfigure after first run:
+- Delete `photobooth_config.json` and restart
+- Or edit the JSON file directly
 
-## Customization
+## Files
 
-### UI Colors
+- `photobooth.py` - Main application
+- `config_manager.py` - Configuration handler
+- `settings_gui.py` - Settings window
+- `build_exe.bat` - Windows build script
+- `photobooth.spec` - PyInstaller configuration
 
-Modify these variables in the configuration section:
+## Requirements
 
-```python
-BACKGROUND_COLOR = "#1a1a2e"   # Dark blue background
-ACCENT_COLOR = "#0f3460"       # Frame accent
-TEXT_COLOR = "#e8e8e8"         # Light text
-HEADER_COLOR = "#00d4ff"       # Cyan header
-```
+- Python 3.8+ (for development only)
+- Windows OS (for EXE)
+- Google Drive for Desktop (for photo sync)
 
-### Window Size
-
-```python
-WINDOW_WIDTH = 900
-WINDOW_HEIGHT = 520
-PHOTO_SIZE = (400, 400)
-QR_SIZE = 300
-```
-
-### Custom Drive URL Logic
-
-To implement direct file linking (requires Google Drive API), modify the `get_drive_url()` function:
-
-```python
-def get_drive_url(filename: str) -> str:
-    # Implement your custom logic here
-    # Example: Call Google Drive API to get file ID
-    file_id = lookup_file_id(filename)  # Your implementation
-    return f"https://drive.google.com/file/d/{file_id}/view"
-```
-
-## Troubleshooting
-
-### Popup not appearing?
-- Check that the `WATCH_FOLDER` path is correct
-- Ensure the folder exists
-- Verify the photo file has a `.jpg`, `.jpeg`, or `.png` extension
-
-### QR code not working?
-- Verify `DRIVE_FOLDER_ID` is correct
-- Ensure the Google Drive folder is shared publicly
-- Check that Google Drive for Desktop is syncing properly
-
-### Multiple popups?
-- This is by design! Each new photo gets its own popup
-- Close popups by clicking anywhere or pressing `Escape`
-
-## Tech Stack
-
-- **Python 3.8+**
-- **watchdog** - File system monitoring
-- **Pillow (PIL)** - Image processing
-- **qrcode** - QR code generation
-- **Tkinter** - GUI framework (included with Python)
-
-## License
-
-MIT License - Feel free to modify and use for your photobooth events!
 

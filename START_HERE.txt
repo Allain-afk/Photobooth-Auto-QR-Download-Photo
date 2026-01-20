@@ -1,0 +1,154 @@
+════════════════════════════════════════════════════════════════
+  PHOTOBOOTH QR - BUILD & RUN INSTRUCTIONS
+════════════════════════════════════════════════════════════════
+
+📋 QUICK START
+────────────────────────────────────────────────────────────────
+
+For End Users (Using EXE):
+1. Get Photobooth-QR.exe
+2. Double-click to run
+3. Configure in the settings window
+4. Done!
+
+For Developers (Building from Source):
+1. Install dependencies: pip install -r requirements.txt
+2. Build EXE: build_exe.bat
+3. Find EXE in: dist\Photobooth-QR.exe
+
+════════════════════════════════════════════════════════════════
+
+🔧 BUILDING THE EXE
+────────────────────────────────────────────────────────────────
+
+Step 1: Install Python
+  • Python 3.8 or newer required
+  • Download from python.org
+
+Step 2: Install Dependencies
+  > pip install -r requirements.txt
+
+Step 3: Build
+  
+  Option A - Simple (Recommended):
+    > build_exe.bat
+  
+  Option B - Manual:
+    > pyinstaller --onefile --windowed --name="Photobooth-QR" photobooth.py
+  
+  Option C - Advanced:
+    > pyinstaller photobooth.spec
+
+Step 4: Find Your EXE
+  • Location: dist\Photobooth-QR.exe
+  • Size: ~20-30 MB
+  • Ready to distribute!
+
+════════════════════════════════════════════════════════════════
+
+▶️ RUNNING THE APP
+────────────────────────────────────────────────────────────────
+
+From Source (Development):
+  > python photobooth.py
+
+From EXE (Production):
+  > dist\Photobooth-QR.exe
+  
+  Or just double-click the EXE!
+
+════════════════════════════════════════════════════════════════
+
+⚙️ FIRST RUN CONFIGURATION
+────────────────────────────────────────────────────────────────
+
+The settings window will appear automatically and ask for:
+
+1. 📁 Watch Folder
+   Where your photobooth saves photos
+   Example: C:\Photobooth\Photos
+   Click "Browse..." to select
+
+2. ☁️ Google Drive Folder ID
+   From your shared folder URL
+   Example URL: https://drive.google.com/drive/folders/1ABC123xyz
+   Enter: 1ABC123xyz
+
+3. ⏱️ Auto-close Time
+   Seconds before popup closes
+   Default: 30 seconds
+
+Click "Save & Start" and you're done!
+
+════════════════════════════════════════════════════════════════
+
+📚 DOCUMENTATION
+────────────────────────────────────────────────────────────────
+
+README.md              - Project overview and quick start
+USER_GUIDE.md          - Complete user manual
+QUICK_REFERENCE.md     - Quick tips and commands
+BUILD_INSTRUCTIONS.md  - Detailed build information
+PROJECT_SUMMARY.md     - What was changed/added
+
+════════════════════════════════════════════════════════════════
+
+🎯 TESTING
+────────────────────────────────────────────────────────────────
+
+1. Build or run the app
+2. Configure settings
+3. Copy a .jpg or .png to the watch folder
+4. Popup should appear with QR code!
+
+Test Script:
+  > python test_run.py
+
+════════════════════════════════════════════════════════════════
+
+📦 DISTRIBUTION
+────────────────────────────────────────────────────────────────
+
+What to distribute:
+  ✅ Photobooth-QR.exe (required)
+  ✅ USER_GUIDE.md (recommended)
+
+What NOT to include:
+  ❌ Python source files (.py)
+  ❌ photobooth_config.json (user will create their own)
+  ❌ Build files (build/, dist/)
+
+════════════════════════════════════════════════════════════════
+
+❓ TROUBLESHOOTING
+────────────────────────────────────────────────────────────────
+
+Build fails?
+  • Make sure all dependencies are installed
+  • Check Python version (3.8+)
+  • Try: pip install --upgrade pyinstaller
+
+EXE too large?
+  • This is normal! (~20-30 MB)
+  • Includes Python + all libraries
+  • Cannot be reduced significantly
+
+Settings not saving?
+  • Check folder permissions
+  • Run as administrator if needed
+  • Make sure disk has space
+
+Popup not appearing?
+  • Verify watch folder path
+  • Check file extension (.jpg/.png)
+  • Look for errors in console
+
+════════════════════════════════════════════════════════════════
+
+✅ READY TO GO!
+
+Build the EXE:  build_exe.bat
+Find it at:     dist\Photobooth-QR.exe
+Then:           Distribute and enjoy! 🎉
+
+════════════════════════════════════════════════════════════════

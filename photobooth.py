@@ -32,6 +32,10 @@ import qrcode
 import tkinter as tk
 from tkinter import font as tkfont
 
+# Local imports
+from config_manager import ConfigManager
+from settings_gui import SettingsWindow
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -41,19 +45,16 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # ============================================================================
-# CONFIGURATION - Modify these settings as needed
+# CONFIGURATION - Now loaded from config file
 # ============================================================================
 
-# Folder to monitor for new photos (Google Drive for Desktop sync folder)
-WATCH_FOLDER = r"C:\Photobooth\Outputs"
+# Initialize configuration manager
+config_manager = ConfigManager()
 
-# Time in seconds before the popup automatically closes
-QR_DISPLAY_TIME = 30
-
-# Your Google Drive shared folder ID (from the folder's shareable link)
-# Example: If your link is https://drive.google.com/drive/folders/ABC123xyz
-# Then DRIVE_FOLDER_ID = "ABC123xyz"
-DRIVE_FOLDER_ID = "YOUR_GOOGLE_DRIVE_FOLDER_ID_HERE"
+# Load settings from config file
+WATCH_FOLDER = config_manager.get("watch_folder")
+QR_DISPLAY_TIME = config_manager.get("qr_display_time")
+DRIVE_FOLDER_ID = config_manager.get("drive_folder_id")
 
 # Supported image extensions
 SUPPORTED_EXTENSIONS = {'.jpg', '.jpeg', '.png'}
@@ -630,20 +631,16 @@ class PhotoboothWatcher:
 # MAIN ENTRY POINT
 # ============================================================================
 
-def main():
-    """Main entry point for the application."""
+def start_monitoring():
+    """Start the photobooth monitoring after settings are configured."""
+    global WATCH_FOLDER, QR_DISPLAY_TIME, DRIVE_FOLDER_ID
+    
+    # Reload configuration
+    WATCH_FOLDER = config_manager.get("watch_folder")
+    QR_DISPLAY_TIME = config_manager.get("qr_display_time")
+    DRIVE_FOLDER_ID = config_manager.get("drive_folder_id")
+    
     print("\n🚀 Starting Photobooth QR Automation System...")
-    
-    # Check if watch folder path is configured
-    if WATCH_FOLDER == r"C:\Photobooth\Outputs":
-        logger.warning("Using default watch folder path.")
-        logger.warning(f"Current setting: {WATCH_FOLDER}")
-        logger.warning("Edit WATCH_FOLDER in the script to change this.\n")
-    
-    if DRIVE_FOLDER_ID == "YOUR_GOOGLE_DRIVE_FOLDER_ID_HERE":
-        logger.warning("⚠️  Google Drive folder ID not configured!")
-        logger.warning("QR codes will point to a placeholder URL.")
-        logger.warning("Edit DRIVE_FOLDER_ID in the script to fix this.\n")
     
     # Start the watcher
     watcher = PhotoboothWatcher(WATCH_FOLDER)
@@ -655,6 +652,21 @@ def main():
         sys.exit(1)
 
 
+def main():
+    """Main entry point for the application."""
+    # Check if configuration is valid
+    if not DRIVE_FOLDER_ID or DRIVE_FOLDER_ID == "":
+        # Show settings GUI on first run
+        print("\n⚙️  Opening settings...\n")
+        settings = SettingsWindow(config_manager, on_save_callback=start_monitoring)
+        settings.show()
+    else:
+        # Settings already configured, start monitoring directly
+        start_monitoring()
+
+
 if __name__ == "__main__":
+    main()
+
     main()
 
